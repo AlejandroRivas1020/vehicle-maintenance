@@ -1,50 +1,84 @@
-import React, { createContext, useState, ReactNode } from 'react';
+import React, { createContext, useState, useContext, ReactNode } from 'react';
+import { registerUser, loginUser, storeToken } from '../api/authService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-interface User {
-  name: string;
-  email: string;
-  password: string;
-  birthdate: string;
-}
-
-interface AuthContextType {
-  user: User | null;
-  login: (email: string, password: string) => Promise<boolean>;
-  register: (userData: User) => Promise<boolean>;
+interface AuthContextData {
+  token: string | null;
+  register: (data: RegisterData) => Promise<boolean>;
+  login: (data: LoginData) => Promise<boolean>;
   logout: () => void;
 }
 
-export const AuthContext = createContext<AuthContextType | null>(null);
+interface RegisterData {
+  name: string;
+  email: string;
+  password: string;
+}
+
+interface LoginData {
+  email: string;
+  password: string;
+}
+
+const AuthContext = createContext<AuthContextData | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [user, setUser] = useState<User | null>(null);
+  const [token, setToken] = useState<string | null>(null);
 
-  const login = async (email: string, password: string): Promise<boolean> => {
-    const storedUser = await AsyncStorage.getItem('user');
-    if (storedUser) {
-      const parsedUser = JSON.parse(storedUser);
-      if (parsedUser.email === email && parsedUser.password === password) {
-        setUser(parsedUser);
+  // Función de registro
+  const register = async (data: RegisterData): Promise<boolean> => {
+    try {
+      const response = await registerUser(data);
+
+      if (response && response.message === 'Usuario creado correctamente') {
         return true;
+      } else {
+        console.error('Error al registrar el usuario');
+        return false;
       }
+    } catch (error) {
+      console.error('Error en el registro:', error);
+      return false;
     }
-    return false;
   };
 
-  const register = async (userData: User): Promise<boolean> => {
-    await AsyncStorage.setItem('user', JSON.stringify(userData));
-    return true;
+  // Función de login
+  const login = async (data: LoginData): Promise<boolean> => {
+    try {
+      const response = await loginUser(data);
+      const { access_token, user } = response.data;
+
+      if (access_token) {
+        setToken(access_token);
+        await storeToken(access_token);
+        return true;
+      } else {
+        console.error('Token no recibido en la respuesta del login');
+        return false;
+      }
+    } catch (error) {
+      console.error('Error en el login:', error);
+      return false;
+    }
   };
 
-  const logout = () => {
-    setUser(null);
-    AsyncStorage.removeItem('user');
+  // Función de logout
+  const logout = async () => {
+    setToken(null);
+    await AsyncStorage.removeItem('accessToken');
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout }}>
+    <AuthContext.Provider value={{ token, register, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
+};
+
+export const useAuth = (): AuthContextData => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth debe usarse dentro de un AuthProvider');
+  }
+  return context;
 };

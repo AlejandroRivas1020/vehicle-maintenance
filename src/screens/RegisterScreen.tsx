@@ -1,18 +1,16 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet, Platform } from 'react-native';
-import { useAuth } from '../hooks/useAuth';
-import DateTimePicker from '@react-native-community/datetimepicker';
+import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { useAuth } from '../context/AuthContext';
 
 const RegisterScreen: React.FC = ({ navigation }) => {
   const { register } = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [birthdate, setBirthdate] = useState('');
-  const [showDatePicker, setShowDatePicker] = useState(false);
 
+  // Manejador para registrar al usuario
   const handleRegister = async () => {
-    const success = await register({ name, email, password, birthdate });
+    const success = await register({ name, email, password });
     if (success) {
       navigation.navigate('Login');
     } else {
@@ -20,42 +18,36 @@ const RegisterScreen: React.FC = ({ navigation }) => {
     }
   };
 
-  const onDateChange = (event: any, selectedDate: any) => {
-    const currentDate = selectedDate || birthdate;
-    setShowDatePicker(Platform.OS === 'ios' ? true : false); // Hide picker for iOS after selection
-    setBirthdate(currentDate.toLocaleDateString()); // Format date
-  };
-
   return (
     <View style={styles.container}>
       <Text>Registro</Text>
-      <TextInput placeholder="Nombre" value={name} onChangeText={setName} style={styles.input} />
-      <TextInput placeholder="Email" value={email} onChangeText={setEmail} style={styles.input} keyboardType="email-address" />
-      <TextInput placeholder="Contraseña" value={password} onChangeText={setPassword} style={styles.input} secureTextEntry />
-      
       <TextInput
-        placeholder="Fecha de nacimiento"
-        value={birthdate}
-        onFocus={() => setShowDatePicker(true)} // Show the date picker when the input is focused
+        placeholder="Nombre"
+        value={name}
+        onChangeText={setName}
         style={styles.input}
       />
-
-      {showDatePicker && (
-        <DateTimePicker
-          value={new Date()}
-          mode="date"
-          display="default"
-          onChange={onDateChange}
-        />
-      )}
-
+      <TextInput
+        placeholder="Email"
+        value={email}
+        onChangeText={setEmail}
+        style={styles.input}
+        keyboardType="email-address"
+      />
+      <TextInput
+        placeholder="Contraseña"
+        value={password}
+        onChangeText={setPassword}
+        style={styles.input}
+        secureTextEntry
+      />
       <Button title="Registrar" onPress={handleRegister} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, padding: 20 , justifyContent:'space-around'},
+  container: { flex: 1, padding: 20 },
   input: { height: 40, borderColor: 'gray', borderWidth: 1, marginBottom: 10, paddingHorizontal: 8 },
 });
 
