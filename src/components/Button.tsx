@@ -13,8 +13,8 @@ const Button: React.FC<ButtonProps> = ({ title, onPress }) => (
 );
 
 const styles = StyleSheet.create({
-  button: { padding: 10, backgroundColor: 'blue', borderRadius: 5 },
-  text: { color: 'white', fontWeight: 'bold', textAlign: 'center' },
+  button: { padding: 20, backgroundColor: 'gray', borderRadius: 10 },
+  text: { color: 'white', fontWeight: 'bold', textAlign: 'center' , fontSize:15},
 });
 
 export default Button;

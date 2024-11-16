@@ -5,16 +5,22 @@ import Button from '../components/Button';
 const WelcomeScreen: React.FC = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Bienvenido a la App</Text>
-      <Button title="Iniciar Sesión" onPress={() => navigation.navigate('Login')} />
-      <Button title="Registrarse" onPress={() => navigation.navigate('Register')} />
+      <Text style={styles.title}>Welcome to Belatrix</Text>
+      <Text style={styles.description}>Vehicle Maintenance</Text>
+      <View style={styles.buttonContainer}>
+        <Button title="Login" onPress={() => navigation.navigate('Login')} />
+        <Button title="Register" onPress={() => navigation.navigate('Register')} />
+      </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center' },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 20 },
+  container: { flexDirection:'column', justifyContent: 'center', alignItems: 'center', height:'100%', width:'100%', padding:10, gap: 20},
+  buttonContainer:{flexDirection:'row', width:'100%',justifyContent:'space-around', margin:10, padding:10},
+  title: { fontSize: 35, fontWeight: 'bold', padding:5 },
+  description:{ justifyContent:'center', alignItems:'center'},
+
 });
 
 export default WelcomeScreen;
