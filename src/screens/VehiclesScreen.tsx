@@ -13,9 +13,9 @@ const VehiclesScreen: React.FC = () => {
   }, []);
 
   const handleDeleteVehicle = (id: string) => {
-    Alert.alert('Confirmar', '¿Estás seguro de que deseas eliminar este vehículo?', [
-      { text: 'Cancelar', style: 'cancel' },
-      { text: 'Eliminar', onPress: () => removeVehicle(id) },
+    Alert.alert('Confirm', 'Are you sure you want to delete this vehicle?', [
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'Delete', onPress: () => removeVehicle(id) },
     ]);
   };
 
@@ -23,7 +23,7 @@ const VehiclesScreen: React.FC = () => {
     <View style={styles.container}>
       <Text style={styles.title}>Vehículos Registrados</Text>
 
-      <Button title="Registrar Vehículo" onPress={() => navigation.navigate('RegisterVehicle')} />
+      <Button title="Register Vehicle" onPress={() => navigation.navigate('RegisterVehicle')} />
 
       {loading && <Text>Cargando...</Text>}
       {error && <Text style={styles.error}>{error}</Text>}
@@ -35,7 +35,7 @@ const VehiclesScreen: React.FC = () => {
           <View style={styles.vehicleItem}>
             <Text>{`${item.licensePlate} - ${item.make} ${item.model}`}</Text>
             {item.photo && <Image source={{ uri: item.photo }} style={styles.image} />}
-            <Button title="Eliminar" onPress={() => handleDeleteVehicle(item.id)} />
+            <Button title="Delete" onPress={() => handleDeleteVehicle(item.id)} />
           </View>
         )}
       />

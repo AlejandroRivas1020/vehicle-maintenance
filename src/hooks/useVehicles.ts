@@ -19,7 +19,7 @@ export const useVehicles = () => {
 
   const getVehicles = async (filters: Record<string, string> = {}) => {
     if (!token) {
-      setError('No autorizado');
+      setError('unauthorized');
       return;
     }
     setLoading(true);
@@ -35,7 +35,7 @@ export const useVehicles = () => {
 
   const addVehicle = async (vehicleData: Record<string, any>) => {
     if (!token) {
-      setError('No autorizado');
+      setError('unauthorized');
       return;
     }
     setLoading(true);
@@ -51,7 +51,7 @@ export const useVehicles = () => {
 
   const editVehicle = async (id: string, vehicleData: Record<string, any>) => {
     if (!token) {
-      setError('No autorizado');
+      setError('unauthorized');
       return;
     }
     setLoading(true);
@@ -69,7 +69,7 @@ export const useVehicles = () => {
 
   const removeVehicle = async (id: string) => {
     if (!token) {
-      setError('No autorizado');
+      setError('unauthorized');
       return;
     }
     setLoading(true);

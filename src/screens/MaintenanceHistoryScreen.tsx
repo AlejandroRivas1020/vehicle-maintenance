@@ -4,8 +4,7 @@ import { View, Text, StyleSheet } from 'react-native';
 const MaintenanceHistoryScreen: React.FC = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Historial de Mantenimientos</Text>
-      {/* Agrega aquí el contenido específico para el historial de mantenimientos */}
+      <Text style={styles.title}>Maintenance History</Text>
     </View>
   );
 };

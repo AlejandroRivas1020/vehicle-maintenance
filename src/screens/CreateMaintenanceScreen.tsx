@@ -4,8 +4,7 @@ import { View, Text, StyleSheet } from 'react-native';
 const CreateMaintenanceScreen: React.FC = () => {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Crear Mantenimiento</Text>
-      {/* Agrega aquí el contenido específico para crear mantenimientos */}
+      <Text style={styles.title}>Create Maintenance</Text>
     </View>
   );
 };

@@ -1,28 +1,16 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import { useAuth } from '../context/AuthContext';
 
-const RegisterScreen: React.FC = ({ navigation }) => {
-  const { register } = useAuth();
+const RegisterScreen: React.FC = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  // Manejador para registrar al usuario
-  const handleRegister = async () => {
-    const success = await register({ name, email, password });
-    if (success) {
-      navigation.navigate('Login');
-    } else {
-      alert('Error al registrarse');
-    }
-  };
-
   return (
     <View style={styles.container}>
-      <Text>Registro</Text>
+      <Text>Register</Text>
       <TextInput
-        placeholder="Nombre"
+        placeholder="Name"
         value={name}
         onChangeText={setName}
         style={styles.input}
@@ -35,13 +23,13 @@ const RegisterScreen: React.FC = ({ navigation }) => {
         keyboardType="email-address"
       />
       <TextInput
-        placeholder="Contraseña"
+        placeholder="Password"
         value={password}
         onChangeText={setPassword}
         style={styles.input}
         secureTextEntry
       />
-      <Button title="Registrar" onPress={handleRegister} />
+      <Button title="Register" />
     </View>
   );
 };
